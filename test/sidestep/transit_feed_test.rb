@@ -38,5 +38,28 @@ module Sidestep
 
       assert_equal expected, @feed.routes
     end
+
+    test "retrieve stops for a route" do
+      expected = [
+        { :stop_id => 38, :stop_name => "EDISON STATION" },
+        { :stop_id => 41, :stop_name => "ELIZABETH" },
+        { :stop_id => 38187, :stop_name => "FRANK R LAUTENBERG SECAUCUS UPPER LEVEL" },
+        { :stop_id => 32905, :stop_name => "HAMILTON" },
+        { :stop_id => 32906, :stop_name => "JERSEY AVE." },
+        { :stop_id => 70, :stop_name => "LINDEN" },
+        { :stop_id => 83, :stop_name => "METROPARK" },
+        { :stop_id => 84, :stop_name => "METUCHEN" },
+        { :stop_id => 103, :stop_name => "NEW BRUNSWICK" },
+        { :stop_id => 105, :stop_name => "NEW YORK PENN STATION" },
+        { :stop_id => 37953, :stop_name => "NEWARK AIRPORT RAILROAD STATION" },
+        { :stop_id => 107, :stop_name => "NEWARK PENN STATION" },
+        { :stop_id => 109, :stop_name => "NORTH ELIZABETH" },
+        { :stop_id => 125, :stop_name => "PRINCETON JCT." },
+        { :stop_id => 127, :stop_name => "RAHWAY" },
+        { :stop_id => 148, :stop_name => "TRENTON TRANSIT CENTER" }
+      ]
+
+      assert_equal expected, @feed.stops_for_route(11)
+    end
   end
 end

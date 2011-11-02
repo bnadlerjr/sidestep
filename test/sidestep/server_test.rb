@@ -24,6 +24,19 @@ module Sidestep
       assert_equal expected, last_response.body
     end
 
+    test '/routes/:route_id/stops' do
+      expected = '[{"stop_id":1,"stop_name":"My Stop"}]'
+
+      TransitFeed.any_instance.expects(:stops_for_route).with(11).returns([
+        { :stop_id => 1, :stop_name => "My Stop" }
+      ])
+
+      get '/routes/11/stops'
+      assert_response :ok
+      assert_content_type :json
+      assert_equal expected, last_response.body
+    end
+
     private
       def app
         Sidestep::Server

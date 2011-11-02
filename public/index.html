@@ -8,16 +8,10 @@
         <script type="text/javascript" src="./js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="./js/jqtouch.js"></script>
         <script type="text/javascript" src="./js/jquery.tmpl.min.js"></script>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $.getJSON("/routes", function(data) {
-                    $("#route-template").tmpl(data).appendTo("#routes ul:first");
-                });
-                $.jQTouch();
-            });
-        </script>
+        <script type="text/javascript" src="./js/app.js"></script>
     </head>
     <body id="jqt">
+        <!-- Routes Panel -->
         <div id="routes" class="current panel">
             <div class="toolbar">
                 <h1>Routes</h1>
@@ -25,15 +19,29 @@
             <div class="content">
                 <ul class="edgetoedge"></ul>
             </div>
-            <div class="info">
-                <p>Powered by jQTouch</p>
+            <div class="info">Powered by jQTouch</div>
+        </div>
+
+        <!-- Stations Panel -->
+        <div id="stations" class="panel">
+            <div class="toolbar">
+                <a class="back" href="#">Back</a>
+                <h1>Stations</h1>
             </div>
+            <ul class="edgetoedge"></ul>
+            <div class="info">Powered by jQTouch</div>
         </div>
 
         <!-- Templates -->
         <script type="text/x-jquery-template" id="route-template">
             <li class="arrow">
                 <a id="${route_id}" href="#stations">${route_long_name}</a>
+            </li>
+        </script>
+
+        <script type="text/x-jquery-tmpl" id="station-template">
+            <li class="arrow">
+                <a id="${stop_id}" href="#departures">${stop_name}</a>
             </li>
         </script>
     </body>

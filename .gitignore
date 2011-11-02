@@ -1,0 +1,8 @@
+*.swp
+.DS_Store
+.bundle
+.sass-cache
+bin
+doc
+tags
+tmp

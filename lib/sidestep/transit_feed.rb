@@ -22,9 +22,18 @@ module Sidestep
 
     # Retrieve all stops for a specific +route_id+.
     def stops_for_route(route_id)
-      trips_for_route = @db[:trips].select(:trip_id).where(:route_id => route_id)
-      stops = @db[:stop_times].select(:stop_id).filter(:trip_id => trips_for_route)
+      stops = @db[:stop_times].select(:stop_id).filter(:trip_id => trips_for_route_today(route_id))
       @db[:stops].select(:stop_id, :stop_name).where(:stop_id => stops).order(:stop_name).all
     end
+
+    private
+      def trips_for_route_today(route_id)
+        today = Date.today.strftime("%Y%m%d")
+        @db[:trips].
+          select(:trip_id).
+          where(:route_id => route_id).
+          join(:calendar_dates, :service_id => :service_id).
+          where(:date => today)
+      end
   end
 end

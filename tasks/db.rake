@@ -17,6 +17,12 @@ namespace :db do
       String :route_color
     end
 
+    loader.load_table(:calendar_dates) do
+      Integer :service_id
+      String :date
+      Integer :exception_type
+    end
+
     loader.load_table(:trips) do
       foreign_key :route_id, :routes
       Integer :service_id

@@ -22,5 +22,10 @@ module Sidestep
     get '/routes/:route_id/stops' do
       FEED.stops_for_route(params[:route_id].to_i).to_json
     end
+
+    get '/routes/:route_id/stops/:stop_id/departures' do
+      FEED.next_departures_on_route_for_stop(
+        params[:route_id].to_i, params[:stop_id].to_i).to_json
+    end
   end
 end

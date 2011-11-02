@@ -22,15 +22,29 @@ module Sidestep
 
     # Retrieve all stops for a specific +route_id+.
     def stops_for_route(route_id)
-      stops = @db[:stop_times].select(:stop_id).filter(:trip_id => trips_for_route_today(route_id))
-      @db[:stops].select(:stop_id, :stop_name).where(:stop_id => stops).order(:stop_name).all
+      stop_ids = @db[:stop_times].
+        select(:stop_id).
+        filter(:trip_id => trips_for_route_today(route_id))
+
+      stops = @db[:stops].
+        select(:stop_id, :stop_name).
+        where(:stop_id => stop_ids).
+        order(:stop_name).
+        all
+
+      stops.map { |stop| { :route_id => route_id}.merge(stop) }
     end
 
-    # Retrieve next departures for a given stop based on the current time.
-    def next_departures_for_stop(stop_id)
+    # Retrieve next departures for a given stop based on the current time and
+    # given route.
+    def next_departures_on_route_for_stop(route_id, stop_id)
       time = Time.now.strftime("%H:%M:%S")
       DB[:stop_times].
-        select(:trip_id, :departure_time).
+        join(:trips, :trip_id => :trip_id).
+        join(:calendar_dates, :service_id => :service_id).
+        filter(:date => Date.today.strftime("%Y%m%d")).
+        select(:trips__trip_id, :stop_id, :departure_time, :trip_headsign).
+        filter(:route_id => route_id).
         filter(:stop_id => stop_id).
         filter{ departure_time > time }.
         order(:departure_time).

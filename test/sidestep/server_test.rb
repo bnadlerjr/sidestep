@@ -8,7 +8,20 @@ module Sidestep
       get '/'
       assert_response :ok
       assert_content_type :html
-      assert_body_includes('Index template')
+      assert_body_includes('Routes')
+    end
+
+    test '/routes' do
+      expected = '[{"route_id":1,"route_long_name":"My Route"}]'
+
+      TransitFeed.any_instance.expects(:routes).returns([
+        { :route_id => 1, :route_long_name => "My Route" }
+      ])
+
+      get '/routes'
+      assert_response :ok
+      assert_content_type :json
+      assert_equal expected, last_response.body
     end
 
     private

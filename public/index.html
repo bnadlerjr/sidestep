@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sidestep</title>
+        <meta content="Bob Nadler, Jr &lt;bnadlerjr@gmail.com&gt;", name="author">
+        <link rel="stylesheet" type="text/css" href="./css/jqtouch.css" />
+        <link rel="stylesheet" type="text/css" href="./css/themes/apple/theme.css" />
+        <script type="text/javascript" src="./js/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="./js/jqtouch.js"></script>
+        <script type="text/javascript" src="./js/jquery.tmpl.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $.getJSON("/routes", function(data) {
+                    $("#route-template").tmpl(data).appendTo("#routes ul:first");
+                });
+                $.jQTouch();
+            });
+        </script>
+    </head>
+    <body id="jqt">
+        <div id="routes" class="current panel">
+            <div class="toolbar">
+                <h1>Routes</h1>
+            </div>
+            <div class="content">
+                <ul class="edgetoedge"></ul>
+            </div>
+            <div class="info">
+                <p>Powered by jQTouch</p>
+            </div>
+        </div>
+
+        <!-- Templates -->
+        <script type="text/x-jquery-template" id="route-template">
+            <li class="arrow">
+                <a id="${route_id}" href="#stations">${route_long_name}</a>
+            </li>
+        </script>
+    </body>
+</html>

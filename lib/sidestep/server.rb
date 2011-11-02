@@ -4,10 +4,15 @@ module Sidestep
   # The main application server.
   class Server < Sinatra::Base
     set :app_file, __FILE__
-    set :public_folder, Proc.new { File.join(root, '../public') }
+    set :public_folder, Proc.new { File.join(root, '../../public') }
 
     get '/' do
-      haml :index
+      File.read(File.join('public', 'index.html'))
+    end
+
+    get '/routes' do
+      content_type :json
+      FEED.routes.to_json
     end
   end
 end

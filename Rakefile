@@ -11,7 +11,10 @@ EXTRA_RDOC_FILES = ['README.rdoc']
 LIB_FILES        = Dir["lib/**/*.rb"]
 MAIN_RDOC        = 'README.rdoc'
 TEST_FILES       = Dir["test/**/*_test.rb"]
-TITLE            = 'sidestep'
+TITLE            = 'Sidestep'
+
+# Import external rake tasks
+Dir.glob('tasks/*.rake').each { |r| import r }
 
 desc "Default tasks: #{DEFAULT_TASKS.join(', ')}"
 task :default => DEFAULT_TASKS

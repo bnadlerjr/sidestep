@@ -2,11 +2,14 @@ source 'http://rubygems.org'
 
 gem "haml", "~> 3.1.3"
 gem "sinatra", "~> 1.3.1"
+gem "sequel", "~> 3.28 "
+gem "sqlite3", "~> 1.3.4"
 
 group :development do
   gem "rake", "~> 0.9.2"
   gem "rdoc", "~> 3.6.1"
   gem "sass", "~> 3.1.3"
+  gem "text_ferry", "~> 0.0.2"
 end
 
 group :test do

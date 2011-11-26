@@ -31,5 +31,17 @@ $(document).ready(function () {
         loadData(url, "#departure-template", "#departures ul:first");
     });
 
+    $("#stops").bind("pageAnimationEnd", function (e, info) {
+        var ids, trip_id, stop_id;
+        if ("out" === info.direction) {
+            return null;
+        }
+
+        ids = $(this).data("referrer")[0].id.split("_");
+        trip_id = ids[0], stop_id = ids[1];
+        url = "/" + ["trips", trip_id, "stops", stop_id, "remaining"].join("/");
+        loadData(url, "#stops-template", "#stops ul:first");
+    });
+
     $.jQTouch();
 });

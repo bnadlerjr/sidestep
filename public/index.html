@@ -42,6 +42,16 @@
             <div class="info">Powered by jQTouch</div>
         </div>
 
+        <!-- Stops Panel -->
+        <div id="stops" class="panel">
+            <div class="toolbar">
+                <a class="back" href="#">Back</a>
+                <h1>Stops</h1>
+            </div>
+            <ul class="rounded"></ul>
+            <div class="info">Powered by jQTouch</div>
+        </div>
+
         <!-- Templates -->
         <script type="text/x-jquery-template" id="route-template">
             <li class="arrow">
@@ -60,6 +70,10 @@
                 <a id="${trip_id}_${stop_id}"
                     href="#stops">${departure_time} to ${trip_headsign}</a>
             </li>
+        </script>
+
+        <script type="text/x-jquery-tmpl" id="stops-template">
+            <li>${stop_name} arrives at ${arrival_time}</li>
         </script>
     </body>
 </html>

@@ -14,6 +14,11 @@ module Sidestep
       :json => '[{"route_id":0,"stop_id":1,"stop_name":"My Stop"}]'
     }
 
+    FAKE_REMAINING_STOPS = {
+      :data => [{ :stop_name => 'My Stop', :arrival_time => '18:00:00' }],
+      :json => '[{"stop_name":"My Stop","arrival_time":"18:00:00"}]'
+    }
+
     test 'get root' do
       get '/'
       assert_response :ok
@@ -46,6 +51,16 @@ module Sidestep
 
       get 'routes/11/stops/83/departures'
       assert_json_response(FAKE_STOPS[:json])
+    end
+
+    test '/trips/:trip_id/stops/:stop_id/remaining' do
+      TransitFeed.any_instance.
+        expects(:remaining_stops_for_trip).
+        with(2310, 83).
+        returns(FAKE_REMAINING_STOPS[:data])
+
+      get '/trips/2310/stops/83/remaining'
+      assert_json_response(FAKE_REMAINING_STOPS[:json])
     end
 
     private

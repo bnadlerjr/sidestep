@@ -51,6 +51,24 @@ module Sidestep
         all
     end
 
+    # Retrieves the remaining stops for a trip (+trip_id+) and the current stop
+    # (+stop_id+).
+    def remaining_stops_for_trip(trip_id, stop_id)
+      stop_times = @db[:stop_times]
+      sequence_id = stop_times.
+        select(:stop_sequence).
+        filter(:trip_id => trip_id, :stop_id => stop_id).
+        first[:stop_sequence]
+
+      stop_times.
+        join(:stops, :stop_id => :stop_id).
+        select(:stop_name, :arrival_time).
+        filter(:trip_id => trip_id).
+        filter{ stop_sequence >= sequence_id }.
+        order(:stop_sequence).
+        all
+    end
+
     private
       def trips_for_route_today(route_id)
         today = Date.today.strftime("%Y%m%d")

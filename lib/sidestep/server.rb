@@ -27,5 +27,10 @@ module Sidestep
       FEED.next_departures_on_route_for_stop(
         params[:route_id].to_i, params[:stop_id].to_i).to_json
     end
+
+    get '/trips/:trip_id/stops/:stop_id/remaining' do
+      FEED.remaining_stops_for_trip(
+        params[:trip_id].to_i, params[:stop_id].to_i).to_json
+    end
   end
 end

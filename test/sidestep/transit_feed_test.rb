@@ -84,5 +84,17 @@ module Sidestep
         assert_equal expected, @result.first
       end
     end
+
+    test "retrieve stops for a trip starting from a specific stop" do
+      expected = [
+        { :stop_name => "METROPARK", :arrival_time => "18:14:00" },
+        { :stop_name => "NEWARK AIRPORT RAILROAD STATION", :arrival_time => "18:28:00" },
+        { :stop_name => "NEWARK PENN STATION", :arrival_time => "18:33:00" },
+        { :stop_name => "FRANK R LAUTENBERG SECAUCUS UPPER LEVEL", :arrival_time => "18:41:00" },
+        { :stop_name => "NEW YORK PENN STATION", :arrival_time => "18:55:00" }
+      ]
+
+      assert_equal expected, @feed.remaining_stops_for_trip(2310, 83)
+    end
   end
 end

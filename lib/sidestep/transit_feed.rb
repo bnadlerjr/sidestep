@@ -26,6 +26,17 @@ module Sidestep
       @db[:stops].select(:stop_id, :stop_name).where(:stop_id => stops).order(:stop_name).all
     end
 
+    # Retrieve next departures for a given stop based on the current time.
+    def next_departures_for_stop(stop_id)
+      time = Time.now.strftime("%H:%M:%S")
+      DB[:stop_times].
+        select(:trip_id, :departure_time).
+        filter(:stop_id => stop_id).
+        filter{ departure_time > time }.
+        order(:departure_time).
+        all
+    end
+
     private
       def trips_for_route_today(route_id)
         today = Date.today.strftime("%Y%m%d")

@@ -17,7 +17,7 @@
                 <h1>Routes</h1>
             </div>
             <div class="content">
-                <ul class="edgetoedge"></ul>
+                <ul class="edgetoedge"><li></li></ul>
             </div>
             <div class="info">Powered by jQTouch</div>
         </div>
@@ -28,7 +28,7 @@
                 <a class="back" href="#">Back</a>
                 <h1>Stations</h1>
             </div>
-            <ul class="edgetoedge"></ul>
+            <ul class="edgetoedge"><li></li></ul>
             <div class="info">Powered by jQTouch</div>
         </div>
 
@@ -38,7 +38,7 @@
                 <a class="back" href="#">Back</a>
                 <h1>Departures</h1>
             </div>
-            <ul class="rounded"></ul>
+            <ul class="rounded"><li></li></ul>
             <div class="info">Powered by jQTouch</div>
         </div>
 
@@ -48,24 +48,24 @@
                 <a class="back" href="#">Back</a>
                 <h1>Stops</h1>
             </div>
-            <ul class="rounded"></ul>
+            <ul class="rounded"><li></li></ul>
             <div class="info">Powered by jQTouch</div>
         </div>
 
         <!-- Templates -->
-        <script type="text/x-jquery-template" id="route-template">
+        <script type="text/x-jquery-template" id="routes-template">
             <li class="arrow">
                 <a id="${route_id}" href="#stations">${route_long_name}</a>
             </li>
         </script>
 
-        <script type="text/x-jquery-tmpl" id="station-template">
+        <script type="text/x-jquery-tmpl" id="stations-template">
             <li class="arrow">
                 <a id="${route_id}_${stop_id}" href="#departures">${stop_name}</a>
             </li>
         </script>
 
-        <script type="text/x-jquery-tmpl" id="departure-template">
+        <script type="text/x-jquery-tmpl" id="departures-template">
             <li class="arrow">
                 <a id="${trip_id}_${stop_id}"
                     href="#stops">${departure_time} to ${trip_headsign}</a>

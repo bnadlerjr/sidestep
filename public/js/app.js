@@ -1,47 +1,36 @@
 $(document).ready(function () {
-    function loadData(url, template, domTarget) {
+    var urlMap = {
+        "stations": function (routeId) {
+            return "/routes/".concat(routeId, "/stops");
+        },
+        "departures": function (routeAndStopIds) {
+            var ids = routeAndStopIds.split("_");
+            return "/routes/".concat(ids[0], "/stops/", ids[1], "/departures");
+        },
+        "stops": function (tripAndStopIds) {
+            var ids = tripAndStopIds.split("_");
+            return "/trips/".concat(ids[0], "/stops/", ids[1], "/remaining");
+        }
+    };
+
+    function loadData(url, target) {
+        var template  = "#" + target + "-template",
+            domTarget = "#" + target + " ul li";
+
         $.getJSON(url, function(data) {
-            $(template).tmpl(data).appendTo(domTarget);
+            $(domTarget).replaceWith($(template).tmpl(data));
         });
     }
 
-    loadData("/routes", "#route-template", "#routes ul:first");
+    function loadPanel(e, info) {
+        if ("out" === info.direction) { return null; }
+        var url = urlMap[this.id]($(this).data("referrer")[0].id);
+        loadData(url, this.id);
+    }
 
-    $("#stations").bind("pageAnimationEnd", function (e, info) {
-        var route_id, url;
-        if ("out" === info.direction) {
-            return null;
-        }
-
-        route_id = $(this).data("referrer")[0].id;
-        url = "/" + ["routes", route_id, "stops"].join("/");
-        loadData(url, "#station-template", "#stations ul:first");
-    });
-
-    $("#departures").bind("pageAnimationEnd", function (e, info) {
-        var ids, route_id, stop_id, url;
-        if ("out" === info.direction) {
-            return null;
-        }
-
-        ids = $(this).data("referrer")[0].id.split("_");
-        route_id = ids[0], stop_id = ids[1];
-        url = "/" + ["routes", route_id, "stops", stop_id, "departures"].join("/");
-
-        loadData(url, "#departure-template", "#departures ul:first");
-    });
-
-    $("#stops").bind("pageAnimationEnd", function (e, info) {
-        var ids, trip_id, stop_id;
-        if ("out" === info.direction) {
-            return null;
-        }
-
-        ids = $(this).data("referrer")[0].id.split("_");
-        trip_id = ids[0], stop_id = ids[1];
-        url = "/" + ["trips", trip_id, "stops", stop_id, "remaining"].join("/");
-        loadData(url, "#stops-template", "#stops ul:first");
-    });
-
+    loadData("/routes", "routes");
+    $("#stations").bind("pageAnimationEnd", loadPanel);
+    $("#departures").bind("pageAnimationEnd", loadPanel);
+    $("#stops").bind("pageAnimationEnd", loadPanel);
     $.jQTouch();
 });

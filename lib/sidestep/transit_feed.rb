@@ -15,7 +15,7 @@ module Sidestep
     def routes
       @db[:routes].
         select(:route_id, :route_long_name).
-        filter(:route_long_name => '').invert.
+        where(:route_id => routes_for_today).
         order(:route_long_name).
         all
     end
@@ -39,7 +39,7 @@ module Sidestep
     # given route.
     def next_departures_on_route_for_stop(route_id, stop_id)
       time = Time.now.strftime("%H:%M:%S")
-      DB[:stop_times].
+      @db[:stop_times].
         join(:trips, :trip_id => :trip_id).
         join(:calendar_dates, :service_id => :service_id).
         filter(:date => Date.today.strftime("%Y%m%d")).
@@ -77,6 +77,16 @@ module Sidestep
           where(:route_id => route_id).
           join(:calendar_dates, :service_id => :service_id).
           where(:date => today)
+      end
+
+      def routes_for_today
+        today = Date.today.strftime("%Y%m%d")
+        @db[:trips].
+          distinct.
+          select(:route_id).
+          join(:calendar_dates, :service_id => :service_id).
+          where(:date => today).
+          map(:route_id)
       end
   end
 end

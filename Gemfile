@@ -5,6 +5,7 @@ gem "json", "~> 1.6.1"
 gem "sinatra", "~> 1.3.1"
 gem "sequel", "~> 3.28 "
 gem "sqlite3", "~> 1.3.4"
+gem "thin", "~> 1.3.1"
 
 group :development do
   gem "rake", "~> 0.9.2"
@@ -23,7 +24,4 @@ group :test do
   gem "reek", "~> 1.2.8"
   gem "roodi", "~> 2.1.0"
   gem "simplecov", "~> 0.5.4", :require => false
-end
-
-group :production do
 end

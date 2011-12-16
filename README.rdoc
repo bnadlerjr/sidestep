@@ -1,16 +1,23 @@
 = Sidestep
-TODO: <Insert description here>
+Mobile Web Application that provides NJTransit train schedule information. A
+working example can be found at http://sidestep.heroku.com
 
 Author:: Bob Nadler, Jr. (bnadlerjr@gmail.com)
 
-== Notes / Use
+== Development Notes
+Built using:
+* Ruby
+* Sinatra
+* Sequel
+* jQuery
+* jQTouch
+
+=== Installation / Running
 Install dependencies using Bundler:
     bundle install
 
 Run using rackup file, for example:
     rackup config.ru
-
-== Contributing
 
 === Issues / Roadmap
 

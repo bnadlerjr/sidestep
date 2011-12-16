@@ -18,12 +18,13 @@ module Sidestep
     end
 
     test "retrieve routes" do
+      Date.stubs(:today).returns(Date.parse("2011-12-15"))
       expected = [
         { :route_id => 2, :route_long_name => "Atlantic City Rail Line" },
         { :route_id => 9, :route_long_name => "Gladstone Branch" },
         { :route_id => 5, :route_long_name => "Hudson-Bergen Light Rail" },
         { :route_id => 6, :route_long_name => "Main/Bergen County Line" },
-        { :route_id => 19, :route_long_name => "Meadowlands Rail Line" },
+        { :route_id => 3, :route_long_name => "Montclair-Boonton Line" },
         { :route_id => 4, :route_long_name => "Montclair-Boonton Line" },
         { :route_id => 8, :route_long_name => "Morris & Essex Line" },
         { :route_id => 14, :route_long_name => "Newark Light Rail" },
@@ -31,9 +32,11 @@ module Sidestep
         { :route_id => 13, :route_long_name => "North Jersey Coast Line" },
         { :route_id => 11, :route_long_name => "Northeast Corridor" },
         { :route_id => 15, :route_long_name => "Pascack Valley Line" },
+        { :route_id => 7, :route_long_name => "Port Jervis Line" },
+        { :route_id => 1, :route_long_name => "Princeton Shuttle" },
         { :route_id => 16, :route_long_name => "Princeton Shuttle" },
         { :route_id => 17, :route_long_name => "Raritan Valley Line" },
-        { :route_id => 18, :route_long_name => "Riverline Light Rail" }
+        {:route_id=>18, :route_long_name=>"Riverline Light Rail"}
       ]
 
       assert_equal expected, @feed.routes
@@ -74,7 +77,7 @@ module Sidestep
 
       test "check format" do
         expected = {
-          :trip_id => 2310, :stop_id => 83, :departure_time => "18:14:00",
+          :trip_id => 1738, :stop_id => 83, :departure_time => "18:14:00",
           :trip_headsign => "NEW YORK PENN STATION"
         }
 
@@ -91,7 +94,7 @@ module Sidestep
         { :stop_name => "NEW YORK PENN STATION", :arrival_time => "18:55:00" }
       ]
 
-      assert_equal expected, @feed.remaining_stops_for_trip(2310, 83)
+      assert_equal expected, @feed.remaining_stops_for_trip(1738, 83)
     end
   end
 end

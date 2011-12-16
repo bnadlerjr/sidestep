@@ -10,8 +10,7 @@ module Sidestep
     end
 
     # Retrieve all routes. Returns an array of hashes containing the route id
-    # and it's name. Any routes where route_long_name is blank are not
-    # returned.
+    # and it's name.
     def routes
       @db[:routes].
         select(:route_id, :route_long_name).
@@ -24,7 +23,7 @@ module Sidestep
     def stops_for_route(route_id)
       stop_ids = @db[:stop_times].
         select(:stop_id).
-        filter(:trip_id => trips_for_route_today(route_id))
+        where(:trip_id => trips_for_route_today(route_id))
 
       stops = @db[:stops].
         select(:stop_id, :stop_name).
@@ -42,11 +41,11 @@ module Sidestep
       @db[:stop_times].
         join(:trips, :trip_id => :trip_id).
         join(:calendar_dates, :service_id => :service_id).
-        filter(:date => Date.today.strftime("%Y%m%d")).
+        where(:date => Date.today.strftime("%Y%m%d")).
         select(:trips__trip_id, :stop_id, :departure_time, :trip_headsign).
-        filter(:route_id => route_id).
-        filter(:stop_id => stop_id).
-        filter{ departure_time > time }.
+        where(:route_id => route_id).
+        where(:stop_id => stop_id).
+        where{ departure_time > time }.
         order(:departure_time).
         all
     end
@@ -57,14 +56,14 @@ module Sidestep
       stop_times = @db[:stop_times]
       sequence_id = stop_times.
         select(:stop_sequence).
-        filter(:trip_id => trip_id, :stop_id => stop_id).
+        where(:trip_id => trip_id, :stop_id => stop_id).
         first[:stop_sequence]
 
       stop_times.
         join(:stops, :stop_id => :stop_id).
         select(:stop_name, :arrival_time).
-        filter(:trip_id => trip_id).
-        filter{ stop_sequence >= sequence_id }.
+        where(:trip_id => trip_id).
+        where{ stop_sequence >= sequence_id }.
         order(:stop_sequence).
         all
     end

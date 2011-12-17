@@ -38,6 +38,8 @@ module Sidestep
     # given route.
     def next_departures_on_route_for_stop(route_id, stop_id)
       time = Time.now.strftime("%H:%M:%S")
+      stop_name = get_stop_name_by_id(stop_id)
+
       @db[:stop_times].
         join(:trips, :trip_id => :trip_id).
         join(:calendar_dates, :service_id => :service_id).
@@ -46,6 +48,7 @@ module Sidestep
         where(:route_id => route_id).
         where(:stop_id => stop_id).
         where{ departure_time > time }.
+        where(~{:trip_headsign => stop_name}).
         order(:departure_time).
         all
     end
@@ -86,6 +89,14 @@ module Sidestep
           join(:calendar_dates, :service_id => :service_id).
           where(:date => today).
           map(:route_id)
+      end
+
+      def get_stop_name_by_id(stop_id)
+        @db[:stops].
+          select(:stop_name).
+          where(:stop_id => stop_id).
+          map(:stop_name).
+          first
       end
   end
 end

@@ -8,6 +8,7 @@ module Sidestep
 
     NORTHEAST_CORRIDOR = 11
     METROPARK = 83
+    NEW_YORK_PENN = 105
 
     setup do
       @feed = Sidestep::TransitFeed.new(DB)
@@ -82,6 +83,47 @@ module Sidestep
         }
 
         assert_equal expected, @result.first
+      end
+
+      test "do not show current station" do
+        expected = [
+          { :trip_id => 1886, :stop_id => 105, :departure_time => "18:14:00",
+            :trip_headsign=>"TRENTON TRANSIT CENTER" },
+          { :trip_id => 1901, :stop_id => 105, :departure_time => "18:53:00",
+            :trip_headsign=>"RAHWAY" },
+          { :trip_id => 1875, :stop_id => 105, :departure_time => "19:03:00",
+            :trip_headsign=>"TRENTON TRANSIT CENTER" },
+          { :trip_id => 1887, :stop_id => 105, :departure_time => "19:13:00",
+            :trip_headsign=>"TRENTON TRANSIT CENTER" },
+          { :trip_id => 1904, :stop_id => 105, :departure_time => "19:51:00",
+            :trip_headsign=>"RAHWAY" },
+          { :trip_id => 1876, :stop_id => 105, :departure_time => "20:03:00",
+            :trip_headsign=>"TRENTON TRANSIT CENTER" },
+          { :trip_id => 1888, :stop_id => 105, :departure_time => "20:14:00",
+            :trip_headsign=>"TRENTON TRANSIT CENTER" },
+          { :trip_id => 1867, :stop_id => 105, :departure_time => "21:01:00",
+            :trip_headsign=>"TRENTON TRANSIT CENTER" },
+          { :trip_id => 1889, :stop_id => 105, :departure_time => "21:14:00",
+            :trip_headsign=>"TRENTON TRANSIT CENTER" },
+          { :trip_id => 1868, :stop_id => 105, :departure_time => "21:57:00",
+            :trip_headsign=>"TRENTON TRANSIT CENTER" },
+          { :trip_id => 1890, :stop_id => 105, :departure_time => "22:14:00",
+            :trip_headsign=>"TRENTON TRANSIT CENTER" },
+          { :trip_id => 1869, :stop_id => 105, :departure_time => "22:57:00",
+            :trip_headsign=>"TRENTON TRANSIT CENTER" },
+          { :trip_id => 1891, :stop_id => 105, :departure_time => "23:14:00",
+            :trip_headsign=>"TRENTON TRANSIT CENTER" },
+          { :trip_id => 1866, :stop_id => 105, :departure_time => "23:56:00",
+            :trip_headsign=>"TRENTON TRANSIT CENTER" },
+          { :trip_id => 1797, :stop_id => 105, :departure_time => "24:43:00",
+            :trip_headsign=>"TRENTON TRANSIT CENTER" },
+          { :trip_id => 1798, :stop_id => 105, :departure_time => "25:22:00",
+            :trip_headsign=>"TRENTON TRANSIT CENTER" }
+      ]
+
+        result = @feed.next_departures_on_route_for_stop(NORTHEAST_CORRIDOR, NEW_YORK_PENN)
+
+        assert_equal expected, result
       end
     end
 

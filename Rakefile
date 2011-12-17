@@ -4,7 +4,7 @@ require "reek/rake/task"
 require "roodi"
 require "roodi_task"
 require "flay_task"
-require "flog_task"
+require "flog"
 
 DEFAULT_TASKS    = %w[test flog flay roodi reek]
 EXTRA_RDOC_FILES = ['README.rdoc']
@@ -40,8 +40,24 @@ FlayTask.new do |t|
   t.dirs = %w[lib]
 end
 
-FlogTask.new do |t|
-  t.dirs = %w[lib]
+task :flog do
+  flog = Flog.new
+  flog.flog ['lib']
+  threshold = 50
+
+  bad_methods = flog.totals.select do |name, score|
+    score > threshold
+  end
+
+  bad_methods.sort do |a, b|
+    a[1] <=> b[1]
+  end.each do |name, score|
+    puts "%8.1f: %s" % [score, name]
+  end
+
+  unless bad_methods.empty?
+    raise "#{bad_methods.size} methods have a flog complexity > #{threshold}"
+  end
 end
 
 Reek::Rake::Task.new do |t|

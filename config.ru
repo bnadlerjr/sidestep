@@ -1,3 +1,12 @@
 require File.join(File.dirname(__FILE__), 'lib/sidestep/server')
+require 'sprockets'
 
-run Sidestep::Server
+map '/assets' do
+  env = Sprockets::Environment.new
+  env.append_path 'lib/sidestep/assets/javascripts'
+  run env
+end
+
+map '/' do
+  run Sidestep::Server
+end

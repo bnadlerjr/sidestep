@@ -1,8 +1,11 @@
 require "sequel"
+require File.join(File.dirname(__FILE__), "time_helper")
 
 module Sidestep
   # Interface to Transit Feed data.
   class TransitFeed
+    include TimeHelper
+
     # Initializes a new Transit Feed. +transit_database+ is a handle to a
     # +Sequel+ database.
     def initialize(transit_database)
@@ -40,7 +43,7 @@ module Sidestep
       time = Time.now.strftime("%H:%M:%S")
       stop_name = get_stop_name_by_id(stop_id)
 
-      @db[:stop_times].
+      departures = @db[:stop_times].
         join(:trips, :trip_id => :trip_id).
         join(:calendar_dates, :service_id => :service_id).
         where(:date => Date.today.strftime("%Y%m%d")).
@@ -49,8 +52,12 @@ module Sidestep
         where(:stop_id => stop_id).
         where{ departure_time > time }.
         where(~{:trip_headsign => stop_name}).
-        order(:departure_time).
-        all
+        order(:departure_time)
+
+      departures.map do |departure|
+        departure[:departure_time] = convert_transit_time(departure[:departure_time])
+        departure
+      end
     end
 
     # Retrieves the remaining stops for a trip (+trip_id+) and the current stop
@@ -62,13 +69,17 @@ module Sidestep
         where(:trip_id => trip_id, :stop_id => stop_id).
         first[:stop_sequence]
 
-      stop_times.
+      stops = stop_times.
         join(:stops, :stop_id => :stop_id).
         select(:stop_name, :arrival_time).
         where(:trip_id => trip_id).
         where{ stop_sequence >= sequence_id }.
-        order(:stop_sequence).
-        all
+        order(:stop_sequence)
+
+      stops.map do |stop|
+        stop[:arrival_time] = convert_transit_time(stop[:arrival_time])
+        stop
+      end
     end
 
     private

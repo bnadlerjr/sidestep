@@ -85,6 +85,18 @@ module Sidestep
         assert_equal expected, @result.first
       end
 
+      test "reformats departure times after midnight" do
+        expected = [
+          { :trip_id => 1663, :stop_id => 83, :departure_time => "01:42:00",
+            :trip_headsign=>"NEW YORK PENN STATION" },
+          { :trip_id => 1798, :stop_id => 83, :departure_time => "02:06:00",
+          :trip_headsign=>"TRENTON TRANSIT CENTER" }
+        ]
+
+        assert_equal expected[1], @result.pop
+        assert_equal expected[0], @result.pop
+      end
+
       test "do not show current station" do
         expected = [
           { :trip_id => 1886, :stop_id => 105, :departure_time => "18:14:00",
@@ -115,9 +127,9 @@ module Sidestep
             :trip_headsign=>"TRENTON TRANSIT CENTER" },
           { :trip_id => 1866, :stop_id => 105, :departure_time => "23:56:00",
             :trip_headsign=>"TRENTON TRANSIT CENTER" },
-          { :trip_id => 1797, :stop_id => 105, :departure_time => "24:43:00",
+          { :trip_id => 1797, :stop_id => 105, :departure_time => "00:43:00",
             :trip_headsign=>"TRENTON TRANSIT CENTER" },
-          { :trip_id => 1798, :stop_id => 105, :departure_time => "25:22:00",
+          { :trip_id => 1798, :stop_id => 105, :departure_time => "01:22:00",
             :trip_headsign=>"TRENTON TRANSIT CENTER" }
       ]
 

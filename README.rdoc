@@ -1,6 +1,5 @@
 = Sidestep
-Mobile Web Application that provides NJTransit train schedule information. A
-working example can be found at http://sidestep.heroku.com
+Mobile Web Application that provides NJTransit train schedule information.
 
 Author:: Bob Nadler, Jr. (bnadlerjr@gmail.com)
 
